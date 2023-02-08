@@ -1,5 +1,6 @@
 class CategoriesController < ApplicationController
     skip_before_action :verify_authenticity_token
+    skip_before_action :authenticate_request
 
     def index
         render json:Category.all
@@ -11,9 +12,5 @@ class CategoriesController < ApplicationController
           render json:@category
         end
     end
-
-    def delete
-        @category = Category.find(params[:id])
-        @category.destroy
-    end
+    
 end

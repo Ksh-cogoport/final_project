@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_07_063411) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_08_051644) do
   create_table "article_categories", force: :cascade do |t|
     t.integer "article_id", null: false
     t.integer "category_id", null: false
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_07_063411) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id", null: false
+    t.string "desc"
     t.index ["author_id"], name: "index_articles_on_author_id"
   end
 

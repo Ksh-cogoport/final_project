@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :authenticate_request, only: [:create,:index]
+    skip_before_action :authenticate_request, only: [:create,:index,:allarticles]
     before_action :set_user, only: [:show, :destroy]
 
     def index
@@ -18,15 +18,44 @@ class AuthorsController < ApplicationController
     end
 
     def update
-        unless @user.update(user_params)
-            render json: { errors: @user.errors.full_messages },
-            status: :unprocessable_entity
+        @user = Author.find(params[:id])
+        if @current_user.id==@user.id
+            if(params[:name])
+                @article.update(name:params[:name])
+            end
+            if(params[:description])
+                @article.update(title:params[:description])
+            end
+            if(params[:email])
+                @article.update(email:params[:email])
+            end
+            render json:@article
+        elsif
+            render html:"Not Authorized"
         end
     end
 
     def destroy
         @user.destroy
     end
+
+    def allarticles
+        @user = Author.find(params[:id])
+        render json:@user.articles
+    end
+    # def update_password
+    #     user=Author.where(email: params[:email])
+    #     if @user != [] && @current_user.email
+    #         if user[0].authenticate(params[:user][:password])
+    #             user[0].update(password: params[:new_password])
+    #             render html:"updated"
+    #         else
+    #             render html:"incorrect password"
+    #         end
+    #     else
+    #         render html:"not found"
+    #     end
+    # end
 
     private
 
