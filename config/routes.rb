@@ -18,8 +18,15 @@ Rails.application.routes.draw do
   get "/categories", to: "categories#index"
   post "/categories", to: "categories#create"
 
-  # 
-  resources :authors
+  # author show all, show by id, create, update, delete
+  get "/authors", to: "authors#index"
+  get "/authors/:id", to: "authors#show"
+  post "/authors", to: "authors#create"
+  put "/authors/:id", to: "authors#update"
+  delete "/authors", to: "authors#destroy"
+
+  #change password with email and old password
+  put "/authors/changepassword", to:"authors#updatepassword"
 
   #login using JWT
   post "/auth/login", to: 'authentication#login'

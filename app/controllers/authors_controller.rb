@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :authenticate_request, only: [:create,:index,:allarticles]
+    skip_before_action :authenticate_request, only: [:create,:index,:allarticles,:update_password]
     before_action :set_user, only: [:show, :destroy]
 
     def index
@@ -21,15 +21,18 @@ class AuthorsController < ApplicationController
         @user = Author.find(params[:id])
         if @current_user.id==@user.id
             if(params[:name])
-                @article.update(name:params[:name])
+                @user.update(name:params[:name])
             end
             if(params[:description])
-                @article.update(title:params[:description])
+                @user.update(title:params[:description])
             end
             if(params[:email])
-                @article.update(email:params[:email])
+                @user.update(email:params[:email])
             end
-            render json:@article
+            if(params[:password])
+                @user.update(password:params[:password])
+            end
+            render json:@user
         elsif
             render html:"Not Authorized"
         end
@@ -43,20 +46,20 @@ class AuthorsController < ApplicationController
         @user = Author.find(params[:id])
         render json:@user.articles
     end
-    
-    # def update_password
-    #     user=Author.where(email: params[:email])
-    #     if @user != [] && @current_user.email
-    #         if user[0].authenticate(params[:user][:password])
-    #             user[0].update(password: params[:new_password])
-    #             render html:"updated"
-    #         else
-    #             render html:"incorrect password"
-    #         end
-    #     else
-    #         render html:"not found"
-    #     end
-    # end
+
+    def update_password
+        user=Author.where(email: params[:email])
+        if @user != [] && @current_user.email
+            if user[0].authenticate(params[:user][:password])
+                user[0].update(password: params[:new_password])
+                render html:"updated"
+            else
+                render html:"incorrect password"
+            end
+        else
+            render html:"not found"
+        end
+    end
 
     private
 
