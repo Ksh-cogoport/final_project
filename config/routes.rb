@@ -20,11 +20,16 @@ Rails.application.routes.draw do
 
   # 
   resources :authors
+
+  #login using JWT
   post "/auth/login", to: 'authentication#login'
 
+  #author_id to all articles
   get "/author_lists/:id", to:"authors#allarticles"
+
+  #get articles by categories_id
   get "/get_articles/:id", to: "categories#get_art"
 
 
-  get "/article_categories", to:"article_categories#index"
+  # get "/article_categories", to:"article_categories#index"
 end
