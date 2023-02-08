@@ -8,16 +8,22 @@ Rails.application.routes.draw do
   # post "/articles", to: "articles#update"
   # delete "/articles", to: "articles#destroy"
 
+  # articles show all, show by id, create, update, delete 
   resources :articles, only: [:index, :show, :create, :update, :destroy]
 
+  # get categories by article id
+  get "/get_categories/:id", to: "articles#getcat"
+
+  #  show all categories, add new categories.
   get "/categories", to: "categories#index"
   post "/categories", to: "categories#create"
-  delete "/categories", to: "categories#delete"
 
+  # 
   resources :authors
   post "/auth/login", to: 'authentication#login'
 
   get "/author_lists/:id", to:"authors#allarticles"
+  get "/get_articles/:id", to: "categories#get_art"
 
 
   get "/article_categories", to:"article_categories#index"

@@ -1,7 +1,6 @@
 class CategoriesController < ApplicationController
     skip_before_action :verify_authenticity_token
     skip_before_action :authenticate_request
-
     def index
         render json:Category.all
     end
@@ -11,6 +10,11 @@ class CategoriesController < ApplicationController
         if @category.save
           render json:@category
         end
+    end
+
+    def get_art 
+        @cat=Category.find(params[:id])
+        render json:@cat.articles
     end
     
 end

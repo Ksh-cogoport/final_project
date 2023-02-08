@@ -43,6 +43,7 @@ class AuthorsController < ApplicationController
         @user = Author.find(params[:id])
         render json:@user.articles
     end
+    
     # def update_password
     #     user=Author.where(email: params[:email])
     #     if @user != [] && @current_user.email

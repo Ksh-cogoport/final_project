@@ -1,7 +1,9 @@
 class ArticlesController < ApplicationController
     skip_before_action :verify_authenticity_token
-    before_action :authenticate_request, except: [:index,:show]
+    before_action :authenticate_request, except: [:index,:show,:getcat]
+
     def index
+      # render json: articles, :include => [:user => {:except => :password_digest}, :categories => {:only => :name}]
       @articles=Article.joins(:author).select("id","title","created_at","author_id",
       "name")
       render json: @articles
@@ -9,7 +11,7 @@ class ArticlesController < ApplicationController
 
     def show
       @article =Article.find(params[:id])
-      render json: @article
+      render json: @article, :include=>[:author =>{:only =>:name}]
     end
 
     def create
@@ -19,12 +21,15 @@ class ArticlesController < ApplicationController
 
     def update
       @article = Article.find(params[:id])
-      if @current_user.id==@article.author_id
+      if @article && @current_user.id==@article.author_id
         if(params[:title])
           @article.update(title:params[:title])
         end
         if(params[:text])
           @article.update(text:params[:text])
+        end
+        if(params[:desc])
+          @article.update(desc:params[:desc])
         end
         render json:@article
       elsif
@@ -40,5 +45,9 @@ class ArticlesController < ApplicationController
         end
     end
 
+    def getcat
+      @art=Article.find(params[:id])
+      render json:@art.categories
+    end
 
 end
